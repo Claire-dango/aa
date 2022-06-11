@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class teki1 : MonoBehaviour
+{
+    private Rigidbody2D rb;
+
+    public float moveSpeed = 1;
+    public bool isMove = true;
+    public float enemyHP = 5;
+ 
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isMove == true)
+        {
+            rb.velocity = new Vector2(moveSpeed, 0);
+        }
+
+        if(enemyHP == 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "mikata")
+        {
+            isMove = false;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+    }
+}

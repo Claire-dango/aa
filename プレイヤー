@@ -1,0 +1,75 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class mikata1 : MonoBehaviour
+{
+    private Rigidbody2D rb;
+
+    public float moveSpeed = 1;
+    public bool isMove = true;
+    private GameObject enemy;
+    private bool isAttack;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        enemy = GameObject.FindWithTag("teki");
+            
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isMove == true)
+        {
+            rb.velocity = new Vector2(-moveSpeed, 0);
+            rb.constraints = RigidbodyConstraints2D.None;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            GetComponent<Animator>().SetBool("kougeki", false);
+        }
+        else
+        {
+            if(isAttack == true)
+            {
+                isAttack = false;
+                StartCoroutine(Attack());
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
+        if (collision.gameObject.tag == "teki")
+        {
+            isMove = false;
+            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            isAttack = true;
+
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+
+        if (collision.gameObject.tag == "teki")
+        {
+            isMove = true;
+            isAttack = false;
+
+        }
+    }
+
+
+    private IEnumerator Attack()
+    {
+        GetComponent<Animator>().SetBool("kougeki",true);
+        yield return new WaitForSeconds(0.5f);
+        enemy.GetComponent<teki1>().enemyHP--;
+        isAttack = true;
+    }
+
+}

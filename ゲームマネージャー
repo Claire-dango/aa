@@ -1,0 +1,46 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class GameManager : MonoBehaviour
+{
+    public GameObject niaru;
+    public Transform spnpoint;
+
+    public GameObject uma;
+    public Transform spnpoint2;
+    public float Interval = 3.0f;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+        InvokeRepeating("Spawnobj", 0.1f, Interval);
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+       
+
+    }
+
+    public void GameStart()
+    {
+        SceneManager.LoadScene("main");
+        
+    }
+    public void Niaruspn()
+    {
+        GameObject newniaru =
+            Instantiate(niaru, spnpoint.position, Quaternion.identity) as GameObject;
+    }
+
+    void Spawnobj()
+    {
+        Instantiate(uma,spnpoint2.position,spnpoint2.rotation);
+    }
+    
+}
